@@ -1,0 +1,1488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#160c1e">
+  <title>I'm Truly Sorry, Tanishka ❤️</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- JS Confetti Library CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <style>
+    :root {
+      --bg-dark: #0f0a14;
+      --bg-gradient: linear-gradient(135deg, #160c1e 0%, #25102a 40%, #1a0b1c 100%);
+      --primary-rose: #ff5e8e;
+      --primary-glow: rgba(255, 94, 142, 0.4);
+      --accent-gold: #f7d070;
+      --accent-purple: #c084fc;
+      --card-bg: rgba(255, 255, 255, 0.05);
+      --card-border: rgba(255, 255, 255, 0.12);
+      --text-main: #fcf7f9;
+      --text-muted: #d1b9c9;
+      --font-heading: 'Playfair Display', Georgia, serif;
+      --font-body: 'Plus Jakarta Sans', sans-serif;
+      --font-hand: 'Caveat', cursive;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      background: var(--bg-dark);
+      background-image: var(--bg-gradient);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      min-height: 100vh;
+      min-height: -webkit-fill-available;
+      overflow-x: hidden;
+      line-height: 1.6;
+      padding-top: env(safe-area-inset-top, 0px);
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+      padding-left: env(safe-area-inset-left, 0px);
+      padding-right: env(safe-area-inset-right, 0px);
+    }
+
+    /* Ambient Particle Canvas */
+    #particle-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: calc(1.5rem + env(safe-area-inset-top, 0px)) calc(1.2rem + env(safe-area-inset-right, 0px)) calc(2rem + env(safe-area-inset-bottom, 0px)) calc(1.2rem + env(safe-area-inset-left, 0px));
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Audio Toggle Button */
+    .audio-btn {
+      position: fixed;
+      top: calc(1.2rem + env(safe-area-inset-top, 0px));
+      right: calc(1.2rem + env(safe-area-inset-right, 0px));
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      padding: 0.6rem 1.1rem;
+      border-radius: 50px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      touch-action: manipulation;
+    }
+
+    .audio-btn:hover {
+      background: rgba(255, 94, 142, 0.2);
+      border-color: var(--primary-rose);
+      transform: translateY(-2px);
+    }
+
+    /* Section Styling */
+    section {
+      margin-bottom: 5rem;
+    }
+
+    .glass-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      padding: 2.5rem;
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+
+    .glass-card:hover {
+      border-color: rgba(255, 94, 142, 0.3);
+    }
+
+    /* Hero Section */
+    .hero {
+      text-align: center;
+      padding-top: 4rem;
+      padding-bottom: 3rem;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: rgba(255, 94, 142, 0.15);
+      border: 1px solid rgba(255, 94, 142, 0.3);
+      color: var(--primary-rose);
+      padding: 0.4rem 1.2rem;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      animation: pulseGlow 2.5s infinite;
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 10px rgba(255, 94, 142, 0.2); }
+      50% { box-shadow: 0 0 20px rgba(255, 94, 142, 0.5); }
+    }
+
+    .hero-title {
+      font-family: var(--font-heading);
+      font-size: 3.2rem;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, #fff 0%, #ffd0e0 50%, #f7d070 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: 1.25rem;
+      color: var(--text-muted);
+      max-width: 600px;
+      margin: 0 auto 2.5rem;
+    }
+
+    .scroll-indicator {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .scroll-indicator:hover {
+      color: var(--primary-rose);
+    }
+
+    .scroll-arrow {
+      width: 24px;
+      height: 24px;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+      40% { transform: translateY(-8px); }
+      60% { transform: translateY(-4px); }
+    }
+
+    /* Letter Section */
+    .letter-card {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .letter-card::before {
+      content: '"';
+      position: absolute;
+      top: -10px;
+      left: 20px;
+      font-family: var(--font-heading);
+      font-size: 10rem;
+      color: rgba(255, 255, 255, 0.03);
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    .section-tag {
+      font-family: var(--font-hand);
+      font-size: 1.8rem;
+      color: var(--accent-gold);
+      margin-bottom: 0.5rem;
+    }
+
+    .section-title {
+      font-family: var(--font-heading);
+      font-size: 2.2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .letter-content p {
+      margin-bottom: 1.2rem;
+      color: #ede2e9;
+      font-size: 1.05rem;
+      line-height: 1.7;
+    }
+
+    .interactive-word {
+      color: var(--primary-rose);
+      border-bottom: 1px dashed var(--primary-rose);
+      cursor: pointer;
+      position: relative;
+      display: inline-block;
+      transition: all 0.2s ease;
+      font-weight: 500;
+    }
+
+    .interactive-word:hover {
+      background: rgba(255, 94, 142, 0.15);
+      border-radius: 4px;
+      padding: 0 4px;
+    }
+
+    .sign-off {
+      margin-top: 2rem;
+      font-family: var(--font-hand);
+      font-size: 2.2rem;
+      color: var(--accent-gold);
+      text-align: right;
+    }
+
+    /* Modal / Popover for Words */
+    .popover {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.9);
+      background: #1e1124;
+      border: 1px solid var(--primary-rose);
+      border-radius: 20px;
+      padding: 1.8rem;
+      max-width: 420px;
+      width: 90%;
+      z-index: 1000;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .popover.active {
+      display: block;
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 1;
+    }
+
+    .popover-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(4px);
+      z-index: 999;
+    }
+
+    .popover-backdrop.active {
+      display: block;
+    }
+
+    .popover-header {
+      font-family: var(--font-heading);
+      font-size: 1.4rem;
+      color: var(--primary-rose);
+      margin-bottom: 0.5rem;
+    }
+
+    .popover-body {
+      font-size: 0.98rem;
+      color: var(--text-main);
+      line-height: 1.6;
+      margin-bottom: 1.2rem;
+    }
+
+    .popover-close {
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      color: var(--text-main);
+      padding: 0.5rem 1.2rem;
+      border-radius: 50px;
+      cursor: pointer;
+      float: right;
+      font-size: 0.85rem;
+      transition: background 0.2s;
+    }
+
+    .popover-close:hover {
+      background: var(--primary-rose);
+    }
+
+    /* Interactive Feature 1: Forgiveness Meter */
+    .meter-box {
+      text-align: center;
+    }
+
+    .meter-reaction {
+      font-size: 4.5rem;
+      margin-bottom: 0.5rem;
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      user-select: none;
+    }
+
+    .meter-status-title {
+      font-family: var(--font-heading);
+      font-size: 1.6rem;
+      margin-bottom: 0.3rem;
+      color: var(--text-main);
+    }
+
+    .meter-status-sub {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 2rem;
+    }
+
+    .slider-container {
+      position: relative;
+      margin: 1.5rem 0 2.5rem;
+    }
+
+    .meter-slider {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 16px;
+      border-radius: 10px;
+      background: linear-gradient(90deg, #ff4b4b 0%, #f7d070 50%, #4ade80 100%);
+      outline: none;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
+      cursor: pointer;
+    }
+
+    .meter-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #ffffff;
+      cursor: pointer;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.8), 0 4px 10px rgba(0, 0, 0, 0.3);
+      border: 3px solid var(--primary-rose);
+      transition: transform 0.1s ease;
+    }
+
+    .meter-slider::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+    }
+
+    .meter-percentage {
+      font-family: var(--font-hand);
+      font-size: 2.2rem;
+      color: var(--accent-gold);
+    }
+
+    /* Interactive Feature 2: Polaroid 3D Cards Grid */
+    .polaroid-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .polaroid-card {
+      perspective: 1000px;
+      height: 280px;
+      cursor: pointer;
+    }
+
+    .polaroid-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transform-style: preserve-3d;
+      border-radius: 16px;
+    }
+
+    .polaroid-card.flipped .polaroid-inner {
+      transform: rotateY(180deg);
+    }
+
+    .polaroid-front, .polaroid-back {
+      position: absolute;
+      inset: 0;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      border-radius: 16px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .polaroid-front {
+      background: linear-gradient(145deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%);
+      border: 1px solid var(--card-border);
+    }
+
+    .polaroid-front .card-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .polaroid-front h3 {
+      font-family: var(--font-heading);
+      font-size: 1.25rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .polaroid-front p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .flip-hint {
+      margin-top: 1rem;
+      font-size: 0.75rem;
+      color: var(--accent-gold);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .polaroid-back {
+      background: linear-gradient(135deg, #2a1236 0%, #1a0b1c 100%);
+      border: 1px solid var(--primary-rose);
+      transform: rotateY(180deg);
+      text-align: left;
+      align-items: flex-start;
+      justify-content: space-between;
+    }
+
+    .polaroid-back-title {
+      font-family: var(--font-heading);
+      font-size: 1.1rem;
+      color: var(--primary-rose);
+    }
+
+    .polaroid-back-text {
+      font-size: 0.92rem;
+      color: #ede2e9;
+      line-height: 1.5;
+      margin: 0.8rem 0;
+    }
+
+    .polaroid-back-footer {
+      font-family: var(--font-hand);
+      font-size: 1.4rem;
+      color: var(--accent-gold);
+      width: 100%;
+      text-align: right;
+    }
+
+    /* Interactive Feature 3: Can We Make Up? Mini Game */
+    .game-box {
+      text-align: center;
+      position: relative;
+      min-height: 320px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .game-title {
+      font-family: var(--font-heading);
+      font-size: 2.2rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .game-desc {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      margin-bottom: 2.5rem;
+      max-width: 500px;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      position: relative;
+      min-height: 80px;
+    }
+
+    .btn-yes {
+      background: linear-gradient(135deg, #ff5e8e 0%, #e04070 100%);
+      color: #fff;
+      border: none;
+      padding: 1rem 2.5rem;
+      border-radius: 50px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 8px 25px rgba(255, 94, 142, 0.4);
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      z-index: 10;
+    }
+
+    .btn-yes:hover {
+      transform: scale(1.1);
+      box-shadow: 0 12px 35px rgba(255, 94, 142, 0.6);
+    }
+
+    .btn-no {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      padding: 0.9rem 2.2rem;
+      border-radius: 50px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .runaway-toast {
+      position: absolute;
+      bottom: 20px;
+      background: rgba(247, 208, 112, 0.95);
+      color: #1a0b1c;
+      padding: 0.5rem 1.2rem;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      pointer-events: none;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.3s ease;
+      z-index: 20;
+    }
+
+    .runaway-toast.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Interactive Feature 4: Virtual Peace Offering / Gift Box */
+    .gift-box-section {
+      text-align: center;
+    }
+
+    .gift-icon-container {
+      font-size: 5rem;
+      cursor: pointer;
+      display: inline-block;
+      transition: transform 0.3s ease;
+      margin-bottom: 1.5rem;
+      user-select: none;
+    }
+
+    .gift-icon-container:hover {
+      animation: wobble 0.6s ease infinite;
+    }
+
+    @keyframes wobble {
+      0%, 100% { transform: rotate(0deg) scale(1.05); }
+      25% { transform: rotate(-8deg) scale(1.1); }
+      75% { transform: rotate(8deg) scale(1.1); }
+    }
+
+    .open-gift-btn {
+      background: linear-gradient(135deg, #f7d070 0%, #e5b33d 100%);
+      color: #1a0b1c;
+      border: none;
+      padding: 0.9rem 2.2rem;
+      border-radius: 50px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 8px 25px rgba(247, 208, 112, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .open-gift-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(247, 208, 112, 0.5);
+    }
+
+    .coupons-container {
+      display: none;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .coupons-container.active {
+      display: grid;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .coupon-card {
+      background: rgba(255, 255, 255, 0.04);
+      border: 2px dashed rgba(247, 208, 112, 0.4);
+      border-radius: 20px;
+      padding: 1.5rem;
+      text-align: left;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .coupon-card::before, .coupon-card::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 16px;
+      height: 16px;
+      background: var(--bg-dark);
+      border-radius: 50%;
+      transform: translateY(-50%);
+    }
+    .coupon-card::before { left: -9px; }
+    .coupon-card::after { right: -9px; }
+
+    .coupon-header {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .coupon-icon {
+      font-size: 2rem;
+    }
+
+    .coupon-title {
+      font-family: var(--font-heading);
+      font-size: 1.1rem;
+      color: var(--accent-gold);
+    }
+
+    .coupon-desc {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      margin-bottom: 1.2rem;
+      line-height: 1.4;
+    }
+
+    .coupon-redeem-btn {
+      background: rgba(255, 94, 142, 0.2);
+      border: 1px solid var(--primary-rose);
+      color: var(--primary-rose);
+      padding: 0.4rem 1rem;
+      border-radius: 50px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      transition: all 0.2s ease;
+    }
+
+    .coupon-redeem-btn:hover {
+      background: var(--primary-rose);
+      color: #fff;
+    }
+
+    .coupon-redeem-btn.redeemed {
+      background: rgba(74, 222, 128, 0.2);
+      border-color: #4ade80;
+      color: #4ade80;
+      cursor: default;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 3rem 0 2rem;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .footer-heart {
+      color: var(--primary-rose);
+      display: inline-block;
+      animation: heartPulse 1.5s infinite;
+    }
+
+    @keyframes heartPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.3); }
+    }
+
+    /* Modal Celebration */
+    .celebration-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 10, 20, 0.85);
+      backdrop-filter: blur(10px);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+
+    .celebration-modal.active {
+      display: flex;
+    }
+
+    .celebration-card {
+      background: linear-gradient(135deg, #291238 0%, #160c1e 100%);
+      border: 2px solid var(--primary-rose);
+      border-radius: 30px;
+      padding: 3rem 2rem;
+      max-width: 500px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 25px 60px rgba(255, 94, 142, 0.4);
+      animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0.7); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .celebration-icon {
+      font-size: 5rem;
+      margin-bottom: 1rem;
+    }
+
+    .celebration-title {
+      font-family: var(--font-heading);
+      font-size: 2.2rem;
+      color: #fff;
+      margin-bottom: 0.8rem;
+    }
+
+    .celebration-text {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+
+    .celebration-close {
+      background: linear-gradient(135deg, #ff5e8e 0%, #e04070 100%);
+      color: #fff;
+      border: none;
+      padding: 0.9rem 2.2rem;
+      border-radius: 50px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(255, 94, 142, 0.4);
+    }
+
+    /* Responsive & iPhone Compatibility Adjustments */
+    @media (max-width: 768px) {
+      .hero-title {
+        font-size: clamp(2rem, 7vw, 2.8rem);
+      }
+      .glass-card {
+        padding: 1.6rem 1.25rem;
+        border-radius: 20px;
+      }
+      .section-title {
+        font-size: 1.75rem;
+      }
+      .polaroid-grid {
+        grid-template-columns: 1fr;
+        gap: 1.2rem;
+      }
+      .polaroid-card {
+        height: 250px;
+      }
+      .btn-group {
+        flex-direction: column;
+        gap: 1.2rem;
+        min-height: 140px;
+      }
+      .btn-yes, .btn-no {
+        width: 100%;
+        max-width: 280px;
+        min-height: 52px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        touch-action: manipulation;
+      }
+      .meter-slider::-webkit-slider-thumb {
+        width: 36px;
+        height: 36px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero {
+        padding-top: 3rem;
+        padding-bottom: 2rem;
+      }
+      .hero-subtitle {
+        font-size: 1.05rem;
+      }
+      .meter-reaction {
+        font-size: 3.8rem;
+      }
+      .audio-btn {
+        font-size: 0.8rem;
+        padding: 0.45rem 0.85rem;
+      }
+      .coupons-container {
+        grid-template-columns: 1fr;
+      }
+      .popover {
+        width: 92%;
+        padding: 1.4rem;
+        border-radius: 24px;
+      }
+      .celebration-card {
+        padding: 2.2rem 1.4rem;
+        border-radius: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ambient Particle Canvas -->
+  <canvas id="particle-canvas"></canvas>
+
+  <!-- Audio Toggle -->
+  <button class="audio-btn" id="audio-toggle">
+    <span id="audio-icon">🎵</span> <span id="audio-label">Ambient Sound: Off</span>
+  </button>
+
+  <div class="container">
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+      <div class="hero-badge">A Heartfelt Note</div>
+      <h1 class="hero-title">I'm Truly Sorry, Tanishka</h1>
+      <p class="hero-subtitle">
+        I made a mistake, and I regret saying things that hurt you. You mean far too much to me, so I built this space to show you how much I care.
+      </p>
+      <a href="#letter" class="scroll-indicator">
+        <span>Read My Apology</span>
+        <svg class="scroll-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+        </svg>
+      </a>
+    </section>
+
+    <!-- SINCERE APOLOGY LETTER SECTION -->
+    <section id="letter">
+      <div class="glass-card letter-card">
+        <div class="section-tag">From the bottom of my heart</div>
+        <h2 class="section-title">Dear Tanishka,</h2>
+        
+        <div class="letter-content">
+          <p>
+            Hey Tanishka, I’m really <span class="interactive-word" onclick="openPopover('remorse')">sorry</span> for how I reacted earlier. You went through a genuinely scary and uncomfortable situation, and instead of being the supportive friend you needed to vent to, I let my stress and frustration get the better of me.
+          </p>
+          <p>
+            I was just <span class="interactive-word" onclick="openPopover('worried')">worried sick</span> about your safety, but getting mad at you for not calling me sooner was completely unfair. You didn't do anything wrong, and what mattered in that moment was how you were feeling—not my reaction. I'm just so glad you’re safe.
+          </p>
+          <p>
+            Please don't ever hesitate to reach out to me, no matter what. Can I <span class="interactive-word" onclick="openPopover('makeitup')">make it up to you</span> tomorrow?
+          </p>
+        </div>
+
+        <div class="sign-off">With sincerity & love, ❤️</div>
+      </div>
+    </section>
+
+    <!-- INTERACTIVE FEATURE 1: FORGIVENESS METER -->
+    <section>
+      <div class="glass-card meter-box">
+        <div class="section-tag">Interactive Meter</div>
+        <h2 class="section-title">How Are You Feeling Right Now?</h2>
+        <p class="meter-status-sub">Slide to let me know where your heart is at...</p>
+
+        <div class="meter-reaction" id="meter-emoji">😤</div>
+        <div class="meter-status-title" id="meter-title">Still upset with you...</div>
+        <div class="meter-percentage" id="meter-percent">0%</div>
+
+        <div class="slider-container">
+          <input type="range" min="0" max="100" value="0" class="meter-slider" id="forgiveness-slider">
+        </div>
+      </div>
+    </section>
+
+    <!-- INTERACTIVE FEATURE 2: POLAROID 3D FLIP CARDS -->
+    <section>
+      <div class="glass-card">
+        <div class="section-tag">Reflections & Promises</div>
+        <h2 class="section-title">Things I Want You to Know</h2>
+        <p style="color: var(--text-muted); font-size: 0.95rem;">Tap or click any card to flip it over ✨</p>
+
+        <div class="polaroid-grid">
+
+          <!-- Card 1 -->
+          <div class="polaroid-card" onclick="flipCard(this)">
+            <div class="polaroid-inner">
+              <div class="polaroid-front">
+                <div class="card-icon">💔</div>
+                <h3>What I Regret</h3>
+                <p>Speaking without taking a moment to think.</p>
+                <div class="flip-hint">Click to flip 🔄</div>
+              </div>
+              <div class="polaroid-back">
+                <div>
+                  <div class="polaroid-back-title">My Realization</div>
+                  <div class="polaroid-back-text">Words carry weight. I regret letting careless words slip when you deserved nothing but warmth and patience.</div>
+                </div>
+                <div class="polaroid-back-footer">I'm so sorry.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="polaroid-card" onclick="flipCard(this)">
+            <div class="polaroid-inner">
+              <div class="polaroid-front">
+                <div class="card-icon">🌟</div>
+                <h3>What You Mean To Me</h3>
+                <p>Your smile, your warmth, your presence.</p>
+                <div class="flip-hint">Click to flip 🔄</div>
+              </div>
+              <div class="polaroid-back">
+                <div>
+                  <div class="polaroid-back-title">Your Value</div>
+                  <div class="polaroid-back-text">You bring so much lightness and genuine joy into my world. Hurting you is the last thing I ever want to do.</div>
+                </div>
+                <div class="polaroid-back-footer">You're irreplaceable.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="polaroid-card" onclick="flipCard(this)">
+            <div class="polaroid-inner">
+              <div class="polaroid-front">
+                <div class="card-icon">🤝</div>
+                <h3>My Promise</h3>
+                <p>How I will do better going forward.</p>
+                <div class="flip-hint">Click to flip 🔄</div>
+              </div>
+              <div class="polaroid-back">
+                <div>
+                  <div class="polaroid-back-title">Action over Words</div>
+                  <div class="polaroid-back-text">I promise to listen more attentively, pause before reacting, and always prioritize your peace of mind.</div>
+                </div>
+                <div class="polaroid-back-footer">A true commitment.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="polaroid-card" onclick="flipCard(this)">
+            <div class="polaroid-inner">
+              <div class="polaroid-front">
+                <div class="card-icon">🌸</div>
+                <h3>Favorite Memory</h3>
+                <p>Moments when you laugh freely.</p>
+                <div class="flip-hint">Click to flip 🔄</div>
+              </div>
+              <div class="polaroid-back">
+                <div>
+                  <div class="polaroid-back-title">Protecting Your Joy</div>
+                  <div class="polaroid-back-text">Seeing you happy and laughing is my favorite thing. I want to spend our time adding to your happiness, never taking from it.</div>
+                </div>
+                <div class="polaroid-back-footer">Always & forever.</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- INTERACTIVE FEATURE 3: CAN WE MAKE UP? MINI GAME -->
+    <section>
+      <div class="glass-card game-box" id="game-container">
+        <div class="section-tag">A Small Question</div>
+        <h2 class="game-title">Will you give me a chance to make it up to you?</h2>
+        <p class="game-desc">Be honest! (Hint: Choose carefully... 😉)</p>
+
+        <div class="btn-group">
+          <button class="btn-yes" id="btn-yes" onclick="handleYesClick()">Yes, absolutely! ❤️</button>
+          <button class="btn-no" id="btn-no">No 🙈</button>
+        </div>
+
+        <div class="runaway-toast" id="runaway-toast">Nice try! But you gotta click Yes! 😉</div>
+      </div>
+    </section>
+
+    <!-- INTERACTIVE FEATURE 4: VIRTUAL PEACE OFFERING GIFT BOX -->
+    <section>
+      <div class="glass-card gift-box-section">
+        <div class="section-tag">A Token of Appreciation</div>
+        <h2 class="section-title">Virtual Peace Offering</h2>
+        <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;">
+          Click the gift box below to unlock special redeemable coupons for Tanishka!
+        </p>
+
+        <div class="gift-icon-container" id="gift-icon" onclick="openGiftBox()">
+          🎁
+        </div>
+        <div>
+          <button class="open-gift-btn" id="open-gift-btn" onclick="openGiftBox()">Open Peace Offering 🎁</button>
+        </div>
+
+        <!-- Coupons Container -->
+        <div class="coupons-container" id="coupons-container">
+
+          <!-- Coupon 1 -->
+          <div class="coupon-card">
+            <div class="coupon-header">
+              <span class="coupon-icon">😬</span>
+              <div class="coupon-title">Unlimited Biting Pass</div>
+            </div>
+            <div class="coupon-desc">Valid for unlimited biting privileges whenever you want! (Because I know how much you love biting 🙈)</div>
+            <button class="coupon-redeem-btn" onclick="redeemCoupon(this)">Redeem Coupon ✨</button>
+          </div>
+
+          <!-- Coupon 2 -->
+          <div class="coupon-card">
+            <div class="coupon-header">
+              <span class="coupon-icon">☕</span>
+              <div class="coupon-title">Favorite Drink / Treat</div>
+            </div>
+            <div class="coupon-desc">Your favorite coffee, boba, or dessert treat on me, anytime.</div>
+            <button class="coupon-redeem-btn" onclick="redeemCoupon(this)">Redeem Coupon ✨</button>
+          </div>
+
+          <!-- Coupon 3 -->
+          <div class="coupon-card">
+            <div class="coupon-header">
+              <span class="coupon-icon">👑</span>
+              <div class="coupon-title">Debate Win Guarantee</div>
+            </div>
+            <div class="coupon-desc">Instant surrender in any future friendly argument. You win automatically!</div>
+            <button class="coupon-redeem-btn" onclick="redeemCoupon(this)">Redeem Coupon ✨</button>
+          </div>
+
+          <!-- Coupon 4 -->
+          <div class="coupon-card">
+            <div class="coupon-header">
+              <span class="coupon-icon">👂</span>
+              <div class="coupon-title">100% Patient Listener</div>
+            </div>
+            <div class="coupon-desc">Full undivided attention whenever you want to vent or share your thoughts.</div>
+            <button class="coupon-redeem-btn" onclick="redeemCoupon(this)">Redeem Coupon ✨</button>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <p>Crafted with genuine care, thought, and affection for Tanishka <span class="footer-heart">❤️</span></p>
+      <p style="margin-top: 0.5rem; font-size: 0.8rem; opacity: 0.7;">Forever promising to be better.</p>
+    </footer>
+
+  </div>
+
+  <!-- POPOVER MODAL FOR INTERACTIVE WORDS -->
+  <div class="popover-backdrop" id="popover-backdrop" onclick="closePopover()"></div>
+  <div class="popover" id="popover-modal">
+    <div class="popover-header" id="popover-title">Deeply Sorry</div>
+    <div class="popover-body" id="popover-body">
+      I mean this from the bottom of my heart. Saying sorry isn't just about words—it's about understanding the impact and actively choosing to do better.
+    </div>
+    <button class="popover-close" onclick="closePopover()">Got it ❤️</button>
+  </div>
+
+  <!-- CELEBRATION MODAL FOR YES BUTTON -->
+  <div class="celebration-modal" id="celebration-modal">
+    <div class="celebration-card">
+      <div class="celebration-icon">🥰✨</div>
+      <h2 class="celebration-title">Thank You, Tanishka!</h2>
+      <p class="celebration-text">
+        Your kindness means the world to me. I promise I won't let you down, and I'm looking forward to making happier memories together!
+      </p>
+      <button class="celebration-close" onclick="closeCelebration()">Yay! ❤️</button>
+    </div>
+  </div>
+
+  <script>
+    /* =========================================================
+       1. AMBIENT CANVAS PARTICLES (HEARTS & STARS)
+       ========================================================= */
+    const canvas = document.getElementById('particle-canvas');
+    const ctx = canvas.getContext('2d');
+
+    let particles = [];
+    const particleCount = 45;
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    class Particle {
+      constructor() {
+        this.reset();
+      }
+
+      reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = canvas.height + Math.random() * 100;
+        this.size = Math.random() * 14 + 8;
+        this.speedY = Math.random() * 1.2 + 0.4;
+        this.speedX = (Math.random() - 0.5) * 0.5;
+        this.opacity = Math.random() * 0.5 + 0.2;
+        this.type = Math.random() > 0.4 ? 'heart' : 'star';
+        this.rotation = Math.random() * Math.PI * 2;
+        this.rotSpeed = (Math.random() - 0.5) * 0.02;
+      }
+
+      update() {
+        this.y -= this.speedY;
+        this.x += this.speedX;
+        this.rotation += this.rotSpeed;
+
+        if (this.y < -20) {
+          this.reset();
+        }
+      }
+
+      draw() {
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.rotation);
+        ctx.globalAlpha = this.opacity;
+
+        if (this.type === 'heart') {
+          ctx.fillStyle = '#ff5e8e';
+          ctx.beginPath();
+          const topCurveHeight = this.size * 0.3;
+          ctx.moveTo(0, topCurveHeight);
+          ctx.bezierCurveTo(0, 0, -this.size / 2, 0, -this.size / 2, topCurveHeight);
+          ctx.bezierCurveTo(-this.size / 2, (this.size + topCurveHeight) / 2, 0, this.size, 0, this.size);
+          ctx.bezierCurveTo(0, this.size, this.size / 2, (this.size + topCurveHeight) / 2, this.size / 2, topCurveHeight);
+          ctx.bezierCurveTo(this.size / 2, 0, 0, 0, 0, topCurveHeight);
+          ctx.fill();
+        } else {
+          ctx.fillStyle = '#f7d070';
+          ctx.font = `${this.size}px sans-serif`;
+          ctx.fillText('✨', 0, 0);
+        }
+
+        ctx.restore();
+      }
+    }
+
+    for (let i = 0; i < particleCount; i++) {
+      const p = new Particle();
+      p.y = Math.random() * canvas.height; // initial scatter
+      particles.push(p);
+    }
+
+    function animateParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+      requestAnimationFrame(animateParticles);
+    }
+    animateParticles();
+
+
+    /* =========================================================
+       2. AMBIENT WEB AUDIO SYNTH PLAYER
+       ========================================================= */
+    let audioCtx = null;
+    let isAudioPlaying = false;
+    let synthInterval = null;
+
+    const audioBtn = document.getElementById('audio-toggle');
+    const audioIcon = document.getElementById('audio-icon');
+    const audioLabel = document.getElementById('audio-label');
+
+    audioBtn.addEventListener('click', () => {
+      if (!isAudioPlaying) {
+        startAmbientAudio();
+      } else {
+        stopAmbientAudio();
+      }
+    });
+
+    function startAmbientAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+
+      isAudioPlaying = true;
+      audioIcon.textContent = '🔊';
+      audioLabel.textContent = 'Ambient Sound: On';
+
+      // Play soft ambient pentatonic notes
+      const notes = [261.63, 293.66, 329.63, 392.00, 440.00, 523.25]; // C4, D4, E4, G4, A4, C5
+
+      function playNote() {
+        if (!isAudioPlaying) return;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+
+        const freq = notes[Math.floor(Math.random() * notes.length)];
+        osc.type = 'sine';
+        osc.frequency.value = freq;
+
+        gain.gain.setValueAtTime(0, audioCtx.currentTime);
+        gain.gain.linearRampToValueAtTime(0.04, audioCtx.currentTime + 1.5);
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 4.5);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        osc.start();
+        osc.stop(audioCtx.currentTime + 5.0);
+      }
+
+      playNote();
+      synthInterval = setInterval(playNote, 2200);
+    }
+
+    function stopAmbientAudio() {
+      isAudioPlaying = false;
+      if (synthInterval) clearInterval(synthInterval);
+      audioIcon.textContent = '🎵';
+      audioLabel.textContent = 'Ambient Sound: Off';
+    }
+
+
+    /* =========================================================
+       3. INTERACTIVE POPOVER MODAL
+       ========================================================= */
+    const popoverDetails = {
+      remorse: {
+        title: "From the Bottom of My Heart ❤️",
+        text: "I failed to be the supportive friend you needed when you were scared and uncomfortable. Letting my stress turn into frustration was completely wrong, and I am deeply sorry."
+      },
+      worried: {
+        title: "Your Safety & Feelings First 🛡️",
+        text: "My panic came from caring about your safety, but directing my frustration at you for not calling sooner was unfair. You did nothing wrong, and your comfort is what mattered."
+      },
+      makeitup: {
+        title: "Making It Up To You ✨",
+        text: "I want to take you out for your favorite drink or food tomorrow, listen to anything on your mind, and give you a stress-free day where you feel 100% cared for."
+      }
+    };
+
+    function openPopover(key) {
+      const detail = popoverDetails[key];
+      if (!detail) return;
+
+      document.getElementById('popover-title').textContent = detail.title;
+      document.getElementById('popover-body').textContent = detail.text;
+
+      document.getElementById('popover-backdrop').classList.add('active');
+      document.getElementById('popover-modal').classList.add('active');
+    }
+
+    function closePopover() {
+      document.getElementById('popover-backdrop').classList.remove('active');
+      document.getElementById('popover-modal').classList.remove('active');
+    }
+
+
+    /* =========================================================
+       4. FORGIVENESS METER SLIDER
+       ========================================================= */
+    const slider = document.getElementById('forgiveness-slider');
+    const meterEmoji = document.getElementById('meter-emoji');
+    const meterTitle = document.getElementById('meter-title');
+    const meterPercent = document.getElementById('meter-percent');
+
+    let triggered100 = false;
+
+    slider.addEventListener('input', (e) => {
+      const val = parseInt(e.target.value);
+      meterPercent.textContent = `${val}%`;
+
+      if (val === 0) {
+        meterEmoji.textContent = '😤';
+        meterTitle.textContent = 'Still upset with you...';
+      } else if (val < 30) {
+        meterEmoji.textContent = '🤨';
+        meterTitle.textContent = 'Listening, but still skeptical...';
+      } else if (val < 60) {
+        meterEmoji.textContent = '🙈';
+        meterTitle.textContent = 'Getting a little warmer...';
+      } else if (val < 90) {
+        meterEmoji.textContent = '💖';
+        meterTitle.textContent = 'Almost fully forgiven!';
+      } else if (val < 100) {
+        meterEmoji.textContent = '🥰';
+        meterTitle.textContent = 'So close to 100%!';
+      } else {
+        meterEmoji.textContent = '🎉🥳🥰';
+        meterTitle.textContent = '100% Forgiven! Thank you Tanishka!';
+
+        if (!triggered100 && typeof confetti === 'function') {
+          triggered100 = true;
+          confetti({
+            particleCount: 100,
+            spread: 70,
+            origin: { y: 0.6 }
+          });
+        }
+      }
+    });
+
+
+    /* =========================================================
+       5. POLAROID FLIP CARDS
+       ========================================================= */
+    function flipCard(card) {
+      card.classList.toggle('flipped');
+    }
+
+
+    /* =========================================================
+       6. RUNAWAY "NO" BUTTON MINI GAME
+       ========================================================= */
+    const btnNo = document.getElementById('btn-no');
+    const btnYes = document.getElementById('btn-yes');
+    const runawayToast = document.getElementById('runaway-toast');
+
+    const toastMessages = [
+      "Nice try! But you gotta click Yes! 😉",
+      "The 'No' button is camera shy 🙈",
+      "Error 404: 'No' option not found 😜",
+      "Nope! My love for you is too fast 🚀",
+      "Try again! You know you want to say Yes 🥰"
+    ];
+
+    let yesScale = 1.0;
+
+    function moveNoButton() {
+      const container = document.getElementById('game-container');
+      const rect = container.getBoundingClientRect();
+
+      const btnRect = btnNo.getBoundingClientRect();
+
+      // Random new relative positions within container limits
+      const maxX = Math.max(20, rect.width - btnRect.width - 30);
+      const maxY = Math.max(20, rect.height - btnRect.height - 30);
+
+      const randomX = Math.max(10, Math.floor(Math.random() * maxX));
+      const randomY = Math.max(10, Math.floor(Math.random() * maxY));
+
+      btnNo.style.position = 'absolute';
+      btnNo.style.left = `${randomX}px`;
+      btnNo.style.top = `${randomY}px`;
+
+      // Expand Yes button slightly to make it extra inviting
+      yesScale += 0.08;
+      btnYes.style.transform = `scale(${yesScale})`;
+
+      // Show funny toast message
+      const randomMsg = toastMessages[Math.floor(Math.random() * toastMessages.length)];
+      runawayToast.textContent = randomMsg;
+      runawayToast.classList.add('active');
+
+      setTimeout(() => {
+        runawayToast.classList.remove('active');
+      }, 1800);
+    }
+
+    btnNo.addEventListener('mouseenter', moveNoButton);
+    btnNo.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      moveNoButton();
+    });
+
+    function handleYesClick() {
+      if (typeof confetti === 'function') {
+        confetti({
+          particleCount: 150,
+          spread: 90,
+          origin: { y: 0.5 }
+        });
+      }
+      document.getElementById('celebration-modal').classList.add('active');
+    }
+
+    function closeCelebration() {
+      document.getElementById('celebration-modal').classList.remove('active');
+    }
+
+
+    /* =========================================================
+       7. VIRTUAL PEACE OFFERING GIFT BOX
+       ========================================================= */
+    let giftOpened = false;
+
+    function openGiftBox() {
+      if (giftOpened) return;
+      giftOpened = true;
+
+      document.getElementById('gift-icon').textContent = '🎉';
+      document.getElementById('open-gift-btn').textContent = 'Peace Offering Unlocked! ✨';
+      document.getElementById('open-gift-btn').style.background = 'linear-gradient(135deg, #4ade80 0%, #22c55e 100%)';
+      document.getElementById('open-gift-btn').style.color = '#fff';
+
+      const coupons = document.getElementById('coupons-container');
+      coupons.classList.add('active');
+
+      if (typeof confetti === 'function') {
+        confetti({
+          particleCount: 120,
+          spread: 80,
+          origin: { y: 0.7 }
+        });
+      }
+    }
+
+    function redeemCoupon(btn) {
+      if (btn.classList.contains('redeemed')) return;
+
+      btn.textContent = 'Coupon Redeemed! ❤️';
+      btn.classList.add('redeemed');
+
+      if (typeof confetti === 'function') {
+        confetti({
+          particleCount: 50,
+          spread: 50,
+          origin: { y: 0.8 }
+        });
+      }
+    }
+  </script>
+</body>
+</html>
