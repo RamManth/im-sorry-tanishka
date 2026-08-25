@@ -975,24 +975,132 @@
       display: block;
     }
 
-    @media (max-width: 600px) {
-      .bg-rolling-container {
-        gap: 0.8rem;
-        justify-content: center;
-      }
-      .bg-rolling-track {
-        gap: 1rem;
-        padding: 0.3rem 0;
-      }
-      .bg-photo-card {
-        width: 155px;
-        height: 235px;
-        border-radius: 16px;
-      }
+    /* Password / Identity Gate Overlay */
+    .gate-overlay {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      background: linear-gradient(135deg, #160c1e 0%, #25102a 50%, #1a0b1c 100%);
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      transition: opacity 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275), transform 0.7s ease, visibility 0.7s;
+      overflow-y: auto;
+    }
+
+    .gate-overlay.unlocked {
+      opacity: 0;
+      transform: scale(1.05);
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .gate-card {
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--card-border);
+      border-radius: 28px;
+      padding: 2.2rem 1.8rem;
+      max-width: 520px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+      position: relative;
+    }
+
+    .gate-title {
+      font-family: var(--font-heading);
+      font-size: 2.4rem;
+      margin-bottom: 0.4rem;
+      background: linear-gradient(135deg, #fff 0%, #ffd0e0 50%, #f7d070 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .gate-subtitle {
+      color: var(--text-muted);
+      font-size: 0.98rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .ppg-image-wrap {
+      position: relative;
+      width: 100%;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+      border: 2px solid var(--primary-rose);
+      margin-bottom: 1.2rem;
+      background: #81d4fa;
+      touch-action: manipulation;
+    }
+
+    .ppg-image-wrap img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .ppg-hotspots {
+      position: absolute;
+      inset: 0;
+      display: flex;
+    }
+
+    .ppg-hotspot {
+      flex: 1;
+      cursor: pointer;
+      position: relative;
+      transition: background 0.2s;
+    }
+
+    .ppg-hotspot:hover {
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    .gate-toast {
+      background: rgba(247, 208, 112, 0.95);
+      color: #1a0b1c;
+      padding: 0.6rem 1.2rem;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.3s ease;
+      display: inline-block;
+    }
+
+    .gate-toast.active {
+      opacity: 1;
+      transform: translateY(0);
     }
   </style>
-</head>
 <body>
+
+  <!-- Password / Identity Gate Overlay -->
+  <div class="gate-overlay" id="gate-overlay">
+    <div class="gate-card">
+      <div class="hero-badge">Identity Check</div>
+      <h1 class="gate-title">Prove You're Tanishka</h1>
+      <p class="gate-subtitle">Tap Blossom (the middle Powerpuff Girl) to unlock...</p>
+
+      <div class="ppg-image-wrap">
+        <img src="./images/powerpuff.png" alt="Powerpuff Girls">
+        <div class="ppg-hotspots">
+          <div class="ppg-hotspot" onclick="handleWrongGirl('Bubbles 💙')"></div>
+          <div class="ppg-hotspot" onclick="handleBlossomClick()"></div>
+          <div class="ppg-hotspot" onclick="handleWrongGirl('Buttercup 💚')"></div>
+        </div>
+      </div>
+
+      <div class="gate-toast" id="gate-toast">Tap Blossom to enter! 🌸</div>
+    </div>
+  </div>
 
   <!-- Ambient Rolling Photos Background -->
   <div class="bg-rolling-container">
@@ -1724,6 +1832,39 @@
     window.addEventListener('resize', optimizeMobileTrackGap);
     window.addEventListener('orientationchange', optimizeMobileTrackGap);
     optimizeMobileTrackGap();
+
+    /* =========================================================
+       8. PASSWORD GATE (PROVE YOU'RE TANISHKA)
+       ========================================================= */
+    function handleWrongGirl(name) {
+      const toast = document.getElementById('gate-toast');
+      toast.textContent = `Nope! That's ${name}. Tanishka is Blossom! 🌸`;
+      toast.classList.add('active');
+
+      setTimeout(() => {
+        toast.classList.remove('active');
+      }, 2500);
+    }
+
+    function handleBlossomClick() {
+      if (typeof confetti === 'function') {
+        confetti({
+          particleCount: 150,
+          spread: 90,
+          origin: { y: 0.5 }
+        });
+      }
+
+      const gate = document.getElementById('gate-overlay');
+      if (gate) gate.classList.add('unlocked');
+      sessionStorage.setItem('tanishka_unlocked', 'true');
+    }
+
+    // Auto unlock if previously verified in session
+    if (sessionStorage.getItem('tanishka_unlocked') === 'true') {
+      const gate = document.getElementById('gate-overlay');
+      if (gate) gate.classList.add('unlocked');
+    }
   </script>
 </body>
 </html>
