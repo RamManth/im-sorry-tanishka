@@ -2136,6 +2136,16 @@
         setTimeout(() => {
           const upiOverlay = document.getElementById('upi-overlay');
           if (upiOverlay) upiOverlay.classList.add('unlocked');
+
+          // Force scroll to top of page (Hero section) when access is granted
+          window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+          document.documentElement.scrollTop = 0;
+          document.body.scrollTop = 0;
+
+          // Remove any URL hash fragment (e.g. #letter)
+          if (window.location.hash) {
+            history.replaceState(null, document.title, window.location.pathname + window.location.search);
+          }
         }, 1300);
       } else {
         // Incorrect PIN
@@ -2171,8 +2181,21 @@
       }
     });
 
-    // Always force verification gate on page load/refresh
+    // Disable automatic scroll restoration by browser
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+
+    // Always force verification gate & reset scroll to top on page load/refresh
     window.addEventListener('DOMContentLoaded', () => {
+      window.scrollTo(0, 0);
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+
+      if (window.location.hash) {
+        history.replaceState(null, document.title, window.location.pathname + window.location.search);
+      }
+
       const gate = document.getElementById('gate-overlay');
       if (gate) gate.classList.remove('unlocked');
       const upiOverlay = document.getElementById('upi-overlay');
