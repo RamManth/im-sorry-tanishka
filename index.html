@@ -2158,8 +2158,6 @@
           });
         }
 
-        sessionStorage.setItem('tanishka_unlocked', 'true');
-
         setTimeout(() => {
           const upiOverlay = document.getElementById('upi-overlay');
           if (upiOverlay) upiOverlay.classList.add('unlocked');
@@ -2198,13 +2196,16 @@
       }
     });
 
-    // Auto unlock both gates if previously verified in session
-    if (sessionStorage.getItem('tanishka_unlocked') === 'true') {
+    // Always force verification gate on page load/refresh
+    window.addEventListener('DOMContentLoaded', () => {
       const gate = document.getElementById('gate-overlay');
-      if (gate) gate.classList.add('unlocked');
+      if (gate) gate.classList.remove('unlocked');
       const upiOverlay = document.getElementById('upi-overlay');
-      if (upiOverlay) upiOverlay.classList.add('unlocked');
-    }
+      if (upiOverlay) {
+        upiOverlay.classList.remove('unlocked');
+        upiOverlay.classList.remove('active');
+      }
+    });
   </script>
 </body>
 </html>
