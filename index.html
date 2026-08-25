@@ -1087,7 +1087,6 @@
     <div class="gate-card">
       <div class="hero-badge">Identity Check</div>
       <h1 class="gate-title">Prove You're Tanishka</h1>
-      <p class="gate-subtitle">Tap Blossom (the middle Powerpuff Girl) to unlock...</p>
 
       <div class="ppg-image-wrap">
         <img src="./images/powerpuff.png" alt="Powerpuff Girls">
@@ -1098,7 +1097,7 @@
         </div>
       </div>
 
-      <div class="gate-toast" id="gate-toast">Tap Blossom to enter! 🌸</div>
+      <div class="gate-toast" id="gate-toast">Which one are you? 🤔</div>
     </div>
   </div>
 
@@ -1838,7 +1837,7 @@
        ========================================================= */
     function handleWrongGirl(name) {
       const toast = document.getElementById('gate-toast');
-      toast.textContent = `Nope! That's ${name}. Tanishka is Blossom! 🌸`;
+      toast.textContent = `Nope! That's ${name}. Try again! 😜`;
       toast.classList.add('active');
 
       setTimeout(() => {
