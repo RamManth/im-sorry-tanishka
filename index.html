@@ -908,8 +908,9 @@
       pointer-events: none;
       display: flex;
       flex-direction: column;
-      justify-content: space-around;
-      opacity: 0.62;
+      justify-content: center;
+      gap: 1.5rem;
+      opacity: 0.65;
       filter: saturate(1.15) brightness(0.95);
     }
 
@@ -926,7 +927,7 @@
       width: max-content;
       z-index: 1;
       will-change: transform;
-      padding: 1rem 0;
+      padding: 0.5rem 0;
     }
 
     .track-top {
@@ -975,9 +976,17 @@
     }
 
     @media (max-width: 600px) {
+      .bg-rolling-container {
+        gap: 0.8rem;
+        justify-content: center;
+      }
+      .bg-rolling-track {
+        gap: 1rem;
+        padding: 0.3rem 0;
+      }
       .bg-photo-card {
-        width: 160px;
-        height: 240px;
+        width: 155px;
+        height: 235px;
         border-radius: 16px;
       }
     }
@@ -1697,6 +1706,24 @@
         });
       }
     }
+
+    /* DOM Layout Optimization for iPhone / Mobile Viewport */
+    function optimizeMobileTrackGap() {
+      const bgContainer = document.querySelector('.bg-rolling-container');
+      if (!bgContainer) return;
+      
+      if (window.innerWidth <= 768) {
+        const vh = window.innerHeight;
+        const optimalGap = Math.max(6, Math.min(16, Math.floor(vh * 0.012)));
+        bgContainer.style.gap = `${optimalGap}px`;
+      } else {
+        bgContainer.style.gap = '1.5rem';
+      }
+    }
+
+    window.addEventListener('resize', optimizeMobileTrackGap);
+    window.addEventListener('orientationchange', optimizeMobileTrackGap);
+    optimizeMobileTrackGap();
   </script>
 </body>
 </html>
